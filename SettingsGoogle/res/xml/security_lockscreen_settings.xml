@@ -119,18 +119,26 @@
             settings:controller="com.android.settings.gestures.PickupGesturePreferenceController"
             settings:searchable="false" />
 
-        <!-- <com.evolution.settings.preference.SecureSettingSwitchPreference
+        <!-- <com.evolution.settings.preference.SecureSettingSwitchPreferenceEvo
             android:key="screen_off_udfps_enabled"
             android:title="@string/ambient_display_screen_off_udfps_title"
             android:summary="@string/ambient_display_screen_off_udfps_summary"
             android:defaultValue="false"
             settings:controller="com.android.settings.security.UdfpsGesturePreferenceController" /> -->
- 
+
+        <!-- Actually controls doze enablement -->
         <SwitchPreference
             android:key="ambient_display_notification"
             android:title="@string/doze_title"
             android:summary="@string/doze_summary"
             settings:controller="com.android.settings.display.AmbientDisplayNotificationsPreferenceController" />
+
+        <!-- Controls wake for notifications -->
+        <!-- <com.evolution.settings.preference.SecureSettingSwitchPreferenceEvo
+            android:key="doze_for_notifications"
+            android:summary="@string/doze_summary"
+            android:title="@string/doze_title"
+            android:defaultValue="true" /> -->
 
         <Preference
             android:key="ambient_display_custom"

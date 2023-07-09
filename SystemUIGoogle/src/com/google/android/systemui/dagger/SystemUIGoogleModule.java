@@ -39,6 +39,7 @@ import com.android.systemui.dock.DockManager;
 import com.android.systemui.dock.DockManagerImpl;
 import com.android.systemui.doze.DozeHost;
 import com.android.systemui.dump.DumpManager;
+import com.android.systemui.voltage.VoltageModule;
 import com.android.systemui.media.dagger.MediaModule;
 import com.android.systemui.navigationbar.gestural.GestureModule;
 import com.android.systemui.plugins.BcSmartspaceDataPlugin;
@@ -56,6 +57,7 @@ import com.android.systemui.shade.ShadeControllerImpl;
 import com.android.systemui.shade.ShadeExpansionStateManager;
 import com.android.systemui.settings.UserContentResolverProvider;
 import com.android.systemui.statusbar.CommandQueue;
+import com.android.systemui.statusbar.events.StatusBarEventsModule;
 import com.android.systemui.statusbar.NotificationLockscreenUserManager;
 import com.android.systemui.statusbar.NotificationLockscreenUserManagerImpl;
 import com.android.systemui.statusbar.NotificationShadeWindowController;
@@ -67,8 +69,6 @@ import com.android.systemui.statusbar.phone.HeadsUpManagerPhone;
 import com.android.systemui.statusbar.phone.KeyguardBypassController;
 import com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager;
 import com.android.systemui.statusbar.policy.AccessibilityManagerWrapper;
-import com.android.systemui.statusbar.policy.BatteryController;
-import com.android.systemui.statusbar.policy.BatteryControllerImpl;
 import com.android.systemui.statusbar.policy.ConfigurationController;
 import com.android.systemui.statusbar.policy.DeviceProvisionedController;
 import com.android.systemui.statusbar.policy.DeviceProvisionedControllerImpl;
@@ -80,6 +80,9 @@ import com.android.systemui.statusbar.policy.SensorPrivacyController;
 import com.android.systemui.statusbar.policy.SensorPrivacyControllerImpl;
 import com.android.systemui.volume.dagger.VolumeModule;
 
+import com.android.systemui.rotationlock.RotationLockModule;
+import com.android.systemui.statusbar.policy.AospPolicyModule;
+
 import com.google.android.systemui.NotificationLockscreenUserManagerGoogle;
 import com.google.android.systemui.assist.AssistManagerGoogle;
 import com.google.android.systemui.assist.dagger.AssistModule;
@@ -90,6 +93,7 @@ import com.google.android.systemui.dreamliner.dagger.DreamlinerModule;
 import com.google.android.systemui.power.dagger.PowerModuleGoogle;
 import com.google.android.systemui.qs.dagger.QSModuleGoogle;
 import com.google.android.systemui.qs.tileimpl.QSFactoryImplGoogle;
+import com.google.android.systemui.qs.tileimpl.GoogleQSModule;
 import com.google.android.systemui.reversecharging.ReverseChargingController;
 import com.google.android.systemui.reversecharging.dagger.ReverseChargingModule;
 import com.google.android.systemui.smartspace.BcSmartspaceDataProvider;
@@ -109,6 +113,7 @@ import dagger.Lazy;
 @Module(includes = {
         GestureModule.class,
         MediaModule.class,
+        GoogleQSModule.class,
         PowerModuleGoogle.class,
         QSModuleGoogle.class,
         ReferenceScreenshotModule.class,
@@ -119,6 +124,10 @@ import dagger.Lazy;
         ReverseChargingModule.class,
         AssistModule.class,
         ColumbusModule.class,
+        StatusBarEventsModule.class,
+        AospPolicyModule.class,
+        RotationLockModule.class,
+        VoltageModule.class,
 })
 public abstract class SystemUIGoogleModule {
 
@@ -225,34 +234,6 @@ public abstract class SystemUIGoogleModule {
 
     @Binds
     abstract DockManager bindDockManager(DockObserver dockObserver);
-
-    @Provides
-    @SysUISingleton
-    static BatteryController provideBatteryController(
-            Context context,
-            EnhancedEstimates enhancedEstimates,
-            PowerManager powerManager,
-            BroadcastDispatcher broadcastDispatcher,
-            DemoModeController demoModeController,
-            DumpManager dumpManager,
-            @Main Handler mainHandler,
-            @Background Handler bgHandler,
-            UserContentResolverProvider userContentResolverProvider,
-            ReverseChargingController reverseChargingController) {
-        BatteryController bC = new BatteryControllerImplGoogle(
-                context,
-                enhancedEstimates,
-                powerManager,
-                broadcastDispatcher,
-                demoModeController,
-                dumpManager,
-                mainHandler,
-                bgHandler,
-                userContentResolverProvider,
-                reverseChargingController);
-        bC.init();
-        return bC;
-    }
 
     /** */
     @Binds
