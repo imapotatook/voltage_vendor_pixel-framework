@@ -17,7 +17,9 @@
         android:key="battery_help_message"
         android:order="-6"
         android:layout="@layout/preference_battery_error"
+        android:selectable="false"
         settings:searchable="false">
+        
 
         <intent
             android:action="android.intent.action.VIEW"
@@ -37,6 +39,7 @@
         android:order="-4"
         android:summary="@string/advanced_battery_preference_summary"
         android:title="@string/advanced_battery_preference_title"
+        settings:keywords="@string/keywords_battery_usage" />
         settings:searchable="false" />
 
     <com.power.hub.preferences.SystemSettingSwitchPreference
@@ -50,6 +53,7 @@
         android:key="battery_saver_summary"
         android:order="-2"
         android:title="@string/battery_saver"
+        settings:keywords="@string/keywords_battery_saver"
         settings:controller="com.android.settings.fuelgauge.BatterySaverController" />
 
     <Preference
